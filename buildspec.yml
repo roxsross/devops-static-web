@@ -1,0 +1,27 @@
+version: 0.2
+
+env:
+  variables:
+    BUCKET_NAME: "demo.web.295devops.com"
+
+phases:
+    install:
+        runtime-versions:
+            nodejs: 18
+        commands:
+            - echo Installing source NPM dependencies...
+            - npm install
+    build:
+        commands:
+            - echo Build started for ${BUILD_ENV} on `date`
+            - npm run build
+            - echo Build completed...
+    post_build:
+        commands:
+            - echo Pre-Build started on `date`
+            - aws s3 cp ./build s3://${BUCKET_NAME} --recursive --acl public-read
+            - echo Pre-Build completed on `date`
+artifacts:
+    files:
+        - build/**/*
+    discard-paths: yes
