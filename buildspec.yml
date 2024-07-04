@@ -25,5 +25,5 @@ phases:
 artifacts:
     files:
         #- build/**/*
-        - build
+        - build/*
     discard-paths: yes
