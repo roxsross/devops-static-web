@@ -19,7 +19,7 @@ phases:
     post_build:
         commands:
             - echo Pre-Build started on `date`
-            - aws s3 cp ./build s3://${BUCKET_NAME} --recursive --acl public-read
+            - aws s3 cp ./build s3://${BUCKET_NAME} --recursive
             - echo Pre-Build completed on `date`
 artifacts:
     files:
