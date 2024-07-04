@@ -24,5 +24,6 @@ phases:
             - echo Pre-Build completed on `date`
 artifacts:
     files:
-        - build/**/*
+        #- build/**/*
+        - build
     discard-paths: yes
