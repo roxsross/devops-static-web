@@ -4,6 +4,7 @@ env:
   variables:
     IMAGE_REPO_NAME: "prueba" # Cambia esto por el nombre de tu repositorio ECR
     IMAGE_TAG: "latest" # Puedes cambiar el tag de la imagen según sea necesario
+    AWS_ACCOUNT_ID: "609056795409"
 
 phases:
   pre_build:
