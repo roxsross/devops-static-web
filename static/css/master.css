@@ -1,0 +1,22 @@
+img{
+  position: absolute;
+  width: 100%;
+  height: auto;
+}
+.text-block{
+  position: absolute;
+  text-align: center;
+  font-size: 9rem;
+  color: white;
+  font-family: "Lucida Console", Courier, monospace;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+.list-group{
+  list-style: decimal inside;
+}
+.list-group-item {
+  display: list-item;
+}
