@@ -1,0 +1,6 @@
+Flask==3.0.2
+keras==3.1.1
+tensorflow==2.16.1
+numpy==1.26.4
+Pillow==10.2.0
+gevent==24.2.1
