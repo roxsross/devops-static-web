@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Metadata</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <h1>Gitlab - ECS</h1>
+
+    <div class="info">
+        <p>{{ url }}</p>
+        
+        <ul>
+            <li><b>image</b>: {{ image }}</li>
+            <li><b>network</b>: {{ network }}</li>
+            <li><b>address</b>: {{ address }}</li>
+        </ul>
+    </div>
+
+    <pre><code class="language-json">{{ data }}</code></pre>
+
+    {% if settings.env == 'development' %}
+    <footer><u>development</u> version: {{ version }}</footer>
+    {% else %}
+    <footer>version: {{ version }}</footer>
+    {% endif %}
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/components/prism-core.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

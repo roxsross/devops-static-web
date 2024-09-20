@@ -1,0 +1,48 @@
+body {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+h1 {
+    color: blueviolet;
+}
+
+.info {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 1.25em;
+    background-color: #f6f7f9;
+    padding: 1rem 1.5em;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.info ul {
+    padding: .25em 0;
+    list-style: disc inside;
+}
+
+.info li {
+    line-height: 1.6;
+}
+
+code, pre {
+    font-size: 0.95em;
+    overflow: auto;
+}
+
+pre {
+    max-width: 1000px;
+    margin: 0 auto !important;
+    /* margin-top: 0; */
+    border: 1px solid rgb(191, 201, 204);
+    box-shadow: 2px 2px 0px 0px rgba(203, 213, 216, 0.5);
+}
+
+footer {
+    text-align: center;
+    margin: 2em;
+    font-size: .9em;
+    color: #666;
+}

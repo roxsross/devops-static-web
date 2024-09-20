@@ -1,0 +1,78 @@
+{
+    "Cluster": "arn:aws:ecs:eu-west-3:0123456789:cluster/gitlab-ecs-tf",
+    "TaskARN": "arn:aws:ecs:eu-west-3:0123456789:task/07e10f65-8023-4d73-b253-4282112954d5",
+    "Family": "gitlab-ecs-tf",
+    "Revision": "1",
+    "DesiredStatus": "RUNNING",
+    "KnownStatus": "RUNNING",
+    "Containers": [
+        {
+            "DockerId": "a44b85cfe62239654646073e451e0c7673ec6958ac4d792460949fda9301b9e5",
+            "Name": "~internal~ecs~pause",
+            "DockerName": "ecs-gitlab-ecs-tf-1-internalecspause-d4cae5eed7ee99caa601",
+            "Image": "fg-proxy:tinyproxy",
+            "ImageID": "",
+            "Labels": {
+                "com.amazonaws.ecs.cluster": "arn:aws:ecs:eu-west-3:0123456789:cluster/gitlab-ecs-tf",
+                "com.amazonaws.ecs.container-name": "~internal~ecs~pause",
+                "com.amazonaws.ecs.task-arn": "arn:aws:ecs:eu-west-3:0123456789:task/07e10f65-8023-4d73-b253-4282112954d5",
+                "com.amazonaws.ecs.task-definition-family": "gitlab-ecs-tf",
+                "com.amazonaws.ecs.task-definition-version": "1"
+            },
+            "DesiredStatus": "RESOURCES_PROVISIONED",
+            "KnownStatus": "RESOURCES_PROVISIONED",
+            "Limits": {
+                "CPU": 0,
+                "Memory": 0
+            },
+            "CreatedAt": "2000-01-01T14:28:10.689890506Z",
+            "StartedAt": "2000-01-01T14:28:11.497578472Z",
+            "Type": "CNI_PAUSE",
+            "Networks": [
+                {
+                    "NetworkMode": "awsvpc",
+                    "IPv4Addresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        },
+        {
+            "DockerId": "f84d59d07b21f15b178ffa64ca60c8177485f437489b7f2f04aeb59faa56cdf3",
+            "Name": "site",
+            "DockerName": "ecs-gitlab-ecs-tf-1-site-c2b1a9f0fbe1e2eba901",
+            "Image": "roxsross12/gitlab-ecs-tf",
+            "ImageID": "sha256:6b12479d47e63b2f0e7ec8f098b6483e1ff641b7316caede7448f4cd1400852e",
+            "Labels": {
+                "com.amazonaws.ecs.cluster": "arn:aws:ecs:eu-west-3:0123456789:cluster/gitlab-ecs-tf",
+                "com.amazonaws.ecs.container-name": "site",
+                "com.amazonaws.ecs.task-arn": "arn:aws:ecs:eu-west-3:0123456789:task/07e10f65-8023-4d73-b253-4282112954d5",
+                "com.amazonaws.ecs.task-definition-family": "gitlab-ecs-tf",
+                "com.amazonaws.ecs.task-definition-version": "1"
+            },
+            "DesiredStatus": "RUNNING",
+            "KnownStatus": "RUNNING",
+            "Limits": {
+                "CPU": 0,
+                "Memory": 0
+            },
+            "CreatedAt": "2000-01-01T14:28:18.638536396Z",
+            "StartedAt": "2000-01-01T14:28:20.100058632Z",
+            "Type": "NORMAL",
+            "Networks": [
+                {
+                    "NetworkMode": "awsvpc",
+                    "IPv4Addresses": [
+                        "10.10.10.10"
+                    ]
+                }
+            ]
+        }
+    ],
+    "Limits": {
+        "CPU": 0.25,
+        "Memory": 512
+    },
+    "PullStartedAt": "2000-01-01T14:28:11.616167353Z",
+    "PullStoppedAt": "2000-01-01T14:28:18.632970956Z"
+}
