@@ -37,7 +37,8 @@ class Book(db.Model):
         return "ID: {} Book name: {}, Author name: {}, Publisher name: {}, Availability: {}".format(self.id, self.title, self.author, self.publisher, self.available)
 
 ## VIEW FUNCTIONS -- HAVE FORMS
-db.create_all()
+with app.app_context():
+    db.create_all()
 @app.route('/')
 def index():
     return render_template('home.html')
