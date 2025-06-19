@@ -9,6 +9,7 @@
     <a href="https://cucumber.io/"><img src="https://img.shields.io/badge/Cucumber-BDD-43a047?logo=cucumber" alt="Cucumber"></a>
     <a href="https://jestjs.io/"><img src="https://img.shields.io/badge/Coverage-80%25-yellowgreen?logo=jest" alt="Coverage"></a>
 </p>
+
 ## Descripción de la Aplicación
 
 Esta aplicación es una API RESTful para la gestión de usuarios, diseñada para demostrar buenas prácticas de DevOps, testing y monitoreo.
