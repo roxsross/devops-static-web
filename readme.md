@@ -8,6 +8,7 @@
     <a href="https://prometheus.io"><img src="https://img.shields.io/badge/Prometheus-Monitoring-red?logo=prometheus" alt="Prometheus"></a>
     <a href="https://cucumber.io/"><img src="https://img.shields.io/badge/Cucumber-BDD-43a047?logo=cucumber" alt="Cucumber"></a>
     <a href="https://jestjs.io/"><img src="https://img.shields.io/badge/Coverage-80%25-yellowgreen?logo=jest" alt="Coverage"></a>
+    <a href="https://k6.io/"><img src="https://img.shields.io/badge/K6-Load%20Testing-4B9CD3?logo=k6" alt="K6"></a>
 </p>
 
 ## Descripción de la Aplicación
