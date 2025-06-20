@@ -107,7 +107,7 @@
             }
         
             // window.location.href will be the IP or DNS name of EC2 instance, K8s worker node or app LoadBalancer
-            const response = await fetch(`${window.location.href}get-products`);
+            const response = await fetch(`${window.location.origin}/get-products`);
             console.log("response", response);
             const jsonData = await response.json();
             console.log("stringified data: " + JSON.stringify(jsonData));
@@ -139,7 +139,7 @@
                 return
             }
         
-            const response = await fetch(`${window.location.href}get-shopping-cart`);
+            const response = await fetch(`${window.location.origin}/get-shopping-cart`);
             console.log("response", response);
             const jsonData = await response.json();
             console.log("stringified data: " + JSON.stringify(jsonData));
@@ -175,7 +175,7 @@
             }
         
             // window.location.href will be the IP or DNS name of EC2 instance, K8s worker node or app LoadBalancer
-            const response = await fetch(`${window.location.href}get-merchandise`);
+            const response = await fetch(`${window.location.origin}/get-merchandise`);
             console.log("response", response);
             const jsonData = await response.json();
             console.log("stringified data: " + JSON.stringify(jsonData));
