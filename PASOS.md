@@ -219,35 +219,35 @@ Para usar los dominios personalizados, agregar al archivo `/etc/hosts` (Linux/Ma
 ### **Comandos Útiles para Docker Compose**
 ```bash
 # Ver servicios corriendo
-docker-compose ps
+docker compose ps
 
 # Ver logs de todos los servicios
-docker-compose logs
+docker compose logs
 
 # Ver logs de un servicio específico
-docker-compose logs backend
-docker-compose logs front
+docker compose logs backend
+docker compose logs front
 
 # Seguir logs en tiempo real
-docker-compose logs -f
+docker compose logs -f
 
 # Reiniciar un servicio
-docker-compose restart backend
+docker compose restart backend
 
 # Escalar un servicio (ejemplo: 3 instancias del backend)
-docker-compose up -d --scale backend=3
+docker compose up -d --scale backend=3
 
 # Detener todos los servicios
-docker-compose stop
+docker compose stop
 
 # Detener y eliminar contenedores
-docker-compose down
+docker compose down
 
 # Eliminar todo incluyendo volúmenes
-docker-compose down -v
+docker compose down -v
 
 # Forzar recreación de contenedores
-docker-compose up -d --force-recreate
+docker compose up -d --force-recreate
 ```
 
 ---
@@ -550,13 +550,13 @@ ls -la compose.yml
 ### **Paso 2: Ejecutar con Docker Compose**
 ```bash
 # Levantar todos los servicios
-docker-compose up -d
+docker compose up -d
 
 # Ver el progreso (opcional)
-docker-compose up
+docker compose up
 
 # Verificar servicios corriendo
-docker-compose ps
+docker compose ps
 ```
 
 ### **Paso 3: Configurar Hosts (Opcional)**
@@ -585,35 +585,35 @@ Para usar los dominios personalizados, agregar al archivo `/etc/hosts` (Linux/Ma
 ### **Comandos Útiles para Docker Compose**
 ```bash
 # Ver servicios corriendo
-docker-compose ps
+docker compose ps
 
 # Ver logs de todos los servicios
-docker-compose logs
+docker compose logs
 
 # Ver logs de un servicio específico
-docker-compose logs backend
-docker-compose logs front
+docker compose logs backend
+docker compose logs front
 
 # Seguir logs en tiempo real
-docker-compose logs -f
+docker compose logs -f
 
 # Reiniciar un servicio
-docker-compose restart backend
+docker compose restart backend
 
 # Escalar un servicio (ejemplo: 3 instancias del backend)
-docker-compose up -d --scale backend=3
+docker compose up -d --scale backend=3
 
 # Detener todos los servicios
-docker-compose stop
+docker compose stop
 
 # Detener y eliminar contenedores
-docker-compose down
+docker compose down
 
 # Eliminar todo incluyendo volúmenes
-docker-compose down -v
+docker compose down -v
 
 # Forzar recreación de contenedores
-docker-compose up -d --force-recreate
+docker compose up -d --force-recreate
 ```
 
 ---
@@ -737,7 +737,7 @@ docker run -d \
 2. **Elegir entorno**: Docker local
 3. **Dashboard**: Vista general de contenedores
 
-### **Método 2: Portainer Integrado (Ya incluido en docker-compose.yml)**
+### **Método 2: Portainer Integrado (Ya incluido en compose.yml)**
 
 El archivo `compose.yml` ya incluye Portainer configurado:
 
