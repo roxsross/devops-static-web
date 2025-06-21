@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-22.04"
+  config.vm.box_version = "202502.21.0"
+
+  config.vm.network "private_network", ip: "192.168.56.10"
+  
+  config.vm.network "forwarded_port", guest: 3000, host: 3000  
+  config.vm.network "forwarded_port", guest: 8000, host: 8000  
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "pokemon-devops-vm"
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  config.vm.synced_folder ".", "/vagrant"
+  
+
+  config.vm.provision "setup-system", type: "shell", path: "scripts/setup-system.sh", privileged: true
+
+  config.vm.provision "setup-backend", type: "shell", path: "scripts/setup-backend.sh", privileged: false
+
+  config.vm.provision "setup-frontend", type: "shell", path: "scripts/setup-frontend.sh", privileged: false
+
+  config.vm.provision "setup-nginx", type: "shell", path: "scripts/setup-nginx.sh", privileged: true
+
+  config.vm.provision "setup-start", type: "shell", path: "scripts/setup-start.sh", privileged: false
+
+  config.vm.post_up_message = <<-MSG
+🔴 ¡Pokemon DevOps VM lista!
+======================================
+📱 90 Days of DevOps by Roxs 🚀
+MSG
+end

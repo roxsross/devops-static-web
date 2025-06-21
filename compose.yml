@@ -1,0 +1,65 @@
+
+# docker run -d --name poke-backend --network pokeops -p 8000:8000 -e PORT=8000 -e HOST=0.0.0.0 -e DEBUG=true roxsross12/pokeops:backend-1.0.0
+# docker run -d --name poke-front -p 3000:3000 --network pokeops -e REACT_APP_URL_DEVELOPMENT=http://localhost:8000 roxsross12/pokeops:frontend-1.0.0
+services:
+  backend:
+    image: roxsross12/pokeops:backend-1.0.0
+    container_name: poke-backend
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DEBUG=true
+      - VIRTUAL_HOST=api.pokemon.localhost
+      - VIRTUAL_PORT=8000
+    ports:
+      - "8000:8000"
+    networks:
+      - pokeopsv1
+
+  front:
+    image: roxsross12/pokeops:frontend-1.0.0
+    container_name: poke-front
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_URL_DEVELOPMENT=http://api.pokemon.localhost:8000
+      - VIRTUAL_HOST=pokemon.localhost
+      - VIRTUAL_PORT=3000
+    networks:
+      - pokeopsv1
+    depends_on:
+      - backend
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:latest
+    container_name: pokemon-nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - pokeopsv1
+
+    depends_on:
+      - backend
+      - front
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9000:9000"
+    environment:
+      - VIRTUAL_HOST=portainer.pokemon.localhost
+      - VIRTUAL_PORT=9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - pokeopsv1
+
+volumes:
+  portainer_data:
+networks:
+  pokeopsv1:
+    driver: bridge
