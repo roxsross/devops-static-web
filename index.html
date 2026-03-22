@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roxs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════════════ */
+:root {
+  --bg:        #08090d;
+  --bg2:       #0d0f17;
+  --bg3:       #111320;
+  --panel:     #161925;
+  --border:    #1e2235;
+  --purple:    #7c3aed;
+  --purple-l:  #a78bfa;
+  --purple-d:  #4c1d95;
+  --cyan:      #06b6d4;
+  --cyan-l:    #67e8f9;
+  --green:     #10b981;
+  --orange:    #f59e0b;
+  --pink:      #ec4899;
+  --white:     #f8fafc;
+  --gray1:     #cbd5e1;
+  --gray2:     #64748b;
+  --gray3:     #334155;
+  --mono:      'Space Mono', monospace;
+  --sans:      'Syne', sans-serif;
+  --radius:    12px;
+  --glow-p:    0 0 40px rgba(124,58,237,0.3);
+  --glow-c:    0 0 40px rgba(6,182,212,0.25);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   GRID BACKGROUND
+═══════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   NOISE OVERLAY
+═══════════════════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+section, nav, header, footer { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  height: 64px;
+  background: rgba(8,9,13,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--purple-l);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-logo span {
+  color: var(--cyan);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--gray2);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-badge {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border: 1px solid var(--purple);
+  color: var(--purple-l);
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 96px clamp(1.5rem, 8vw, 8rem) 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow orbs */
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 20%;  left: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+#hero::after {
+  content: '';
+  position: absolute;
+  bottom: 10%; right: -5%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-pre {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--cyan);
+  letter-spacing: 0.15em;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.1s;
+}
+
+.hero-pre::before {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 1px;
+  background: var(--cyan);
+}
+
+.hero-name {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.6rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.2s;
+}
+
+.hero-name .accent { color: var(--purple-l); }
+.hero-name .dim { color: var(--gray3); }
+
+.hero-role {
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  color: var(--gray1);
+  font-weight: 600;
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.3s;
+}
+
+.hero-role .tag {
+  display: inline-block;
+  padding: 2px 10px;
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.35);
+  border-radius: 4px;
+  color: var(--purple-l);
+  font-size: 0.85rem;
+  font-family: var(--mono);
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.hero-desc {
+  max-width: 560px;
+  color: var(--gray1);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.4s;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.5s;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: all 0.2s;
+}
+
+.badge:hover { transform: translateY(-2px); }
+
+.badge-aws  { color: #f97316; border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.08); }
+.badge-docker { color: var(--cyan); border-color: rgba(6,182,212,0.4); background: rgba(6,182,212,0.08); }
+.badge-gitlab { color: #fc6d26; border-color: rgba(252,109,38,0.4); background: rgba(252,109,38,0.08); }
+.badge-naranja { color: var(--orange); border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.6s;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 28px;
+  background: var(--purple);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  box-shadow: var(--glow-p);
+}
+
+.btn-primary:hover {
+  background: #6d28d9;
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(124,58,237,0.5);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 28px;
+  border: 1px solid var(--border);
+  color: var(--gray1);
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  transform: translateY(-2px);
+}
+
+/* Terminal widget */
+.hero-terminal {
+  position: absolute;
+  right: clamp(1rem, 6vw, 6rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(400px, 38vw);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), var(--glow-p);
+  opacity: 0;
+  animation: fadeLeft 0.8s ease forwards 0.7s;
+}
+
+.terminal-bar {
+  background: var(--bg3);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ef4444; }
+.dot-y { background: #f59e0b; }
+.dot-g { background: #10b981; }
+
+.terminal-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--gray2);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.terminal-body {
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.9;
+}
+
+.t-prompt { color: var(--green); }
+.t-cmd    { color: var(--white); }
+.t-out    { color: var(--gray2); }
+.t-cyan   { color: var(--cyan); }
+.t-purple { color: var(--purple-l); }
+.t-orange { color: var(--orange); }
+.t-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--cyan);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ═══════════════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════════════ */
+.stats-bar {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 2rem clamp(1.5rem, 8vw, 8rem);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 1rem;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+
+.stat-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--purple-l), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--gray2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════
+   SECTIONS COMMON
+═══════════════════════════════════════════════════ */
+section {
+  padding: 5rem clamp(1.5rem, 8vw, 8rem);
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--cyan);
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.section-sub {
+  color: var(--gray2);
+  font-size: 1rem;
+  margin-bottom: 3rem;
+  max-width: 540px;
+}
+
+/* ═══════════════════════════════════════════════════
+   SOBRE MÍ
+═══════════════════════════════════════════════════ */
+#about {
+  background: var(--bg2);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.about-text p {
+  color: var(--gray1);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.about-text strong { color: var(--purple-l); }
+
+.about-text .highlight {
+  display: inline-block;
+  background: rgba(124,58,237,0.12);
+  border-left: 2px solid var(--purple);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--gray1);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.about-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.about-card:hover {
+  border-color: var(--purple);
+  transform: translateX(4px);
+}
+
+.about-card-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.about-card-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: var(--white);
+}
+
+.about-card-desc {
+  font-size: 0.85rem;
+  color: var(--gray2);
+  font-family: var(--mono);
+}
+
+/* ═══════════════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════════════ */
+#skills {
+  background: var(--bg);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.skill-category {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-color, var(--purple));
+}
+
+.skill-category:hover {
+  border-color: var(--accent-color, var(--purple));
+  box-shadow: 0 0 30px rgba(124,58,237,0.12);
+}
+
+.skill-category-title {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-color, var(--purple-l));
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--gray1);
+  transition: all 0.2s;
+}
+
+.skill-tag:hover {
+  background: rgba(124,58,237,0.12);
+  border-color: var(--purple);
+  color: var(--purple-l);
+}
+
+/* ═══════════════════════════════════════════════════
+   PROYECTOS
+═══════════════════════════════════════════════════ */
+#proyectos {
+  background: var(--bg2);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(124,58,237,0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.project-card:hover {
+  border-color: var(--purple);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow-p);
+}
+
+.project-card:hover::after { opacity: 1; }
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-icon {
+  font-size: 2rem;
+}
+
+.project-arrow {
+  color: var(--gray3);
+  font-size: 1.2rem;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.project-card:hover .project-arrow {
+  color: var(--purple-l);
+  transform: translate(3px, -3px);
+}
+
+.project-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.project-desc {
+  font-size: 0.9rem;
+  color: var(--gray2);
+  line-height: 1.6;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: rgba(124,58,237,0.15);
+  color: var(--purple-l);
+  border: 1px solid rgba(124,58,237,0.25);
+}
+
+.project-tag.cyan {
+  background: rgba(6,182,212,0.12);
+  color: var(--cyan-l);
+  border-color: rgba(6,182,212,0.25);
+}
+
+.project-tag.green {
+  background: rgba(16,185,129,0.12);
+  color: #6ee7b7;
+  border-color: rgba(16,185,129,0.25);
+}
+
+.project-tag.orange {
+  background: rgba(245,158,11,0.12);
+  color: #fcd34d;
+  border-color: rgba(245,158,11,0.25);
+}
+
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.status-live {
+  background: rgba(16,185,129,0.15);
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+
+.status-live::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+.status-wip {
+  background: rgba(245,158,11,0.12);
+  color: var(--orange);
+  border: 1px solid rgba(245,158,11,0.25);
+}
+
+.status-wip::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+/* ═══════════════════════════════════════════════════
+   COMUNIDAD / SPEAKING
+═══════════════════════════════════════════════════ */
+#comunidad {
+  background: var(--bg);
+}
+
+.talks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.talk-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.talk-card:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 25px rgba(6,182,212,0.1);
+}
+
+.talk-year {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.talk-year::before {
+  content: '';
+  width: 16px; height: 1px;
+  background: var(--cyan);
+}
+
+.talk-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.talk-event {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--gray2);
+}
+
+/* ═══════════════════════════════════════════════════
+   BOOTCAMP CTA
+═══════════════════════════════════════════════════ */
+#bootcamp {
+  background: linear-gradient(135deg, var(--bg2) 0%, rgba(124,58,237,0.08) 50%, var(--bg2) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding: 5rem clamp(1.5rem, 8vw, 8rem);
+}
+
+.bootcamp-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 5px 14px;
+  border: 1px solid var(--purple);
+  border-radius: 20px;
+  color: var(--purple-l);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+#bootcamp h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+#bootcamp h2 span {
+  background: linear-gradient(90deg, var(--purple-l), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#bootcamp p {
+  color: var(--gray1);
+  font-size: 1.05rem;
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+.bootcamp-ctas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn-big {
+  padding: 14px 36px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem clamp(1.5rem, 8vw, 8rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-left {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--gray2);
+}
+
+.footer-left strong { color: var(--purple-l); }
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--gray2);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--cyan); }
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translate(32px, -50%); }
+  to   { opacity: 1; transform: translate(0, -50%); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-terminal { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-name { font-size: clamp(3rem, 12vw, 5rem); }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat:last-child { border-bottom: none; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════
+   TYPING EFFECT
+═══════════════════════════════════════════════════ */
+.typewriter-wrap { display: inline; }
+</style>
+</head>
+
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span>~/</span>roxs
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#proyectos">proyectos</a></li>
+    <li><a href="#comunidad">comunidad</a></li>
+    <li><a href="#bootcamp">bootcamp</a></li>
+  </ul>
+  <span class="nav-badge">disponible para talks</span>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<header id="hero">
+  <div class="hero-pre">DEVOPS ENGINEER · TECH LEAD · INSTRUCTOR</div>
+
+  <h1 class="hero-name">
+    <span class="dim">hola,</span><br>
+    soy <span class="accent">Roxs</span>
+  </h1>
+
+  <p class="hero-role">
+    Tech Lead Onfire
+    <span class="tag">AWS Container Hero</span>
+    <span class="tag" style="border-color:rgba(6,182,212,0.4);color:var(--cyan-l);background:rgba(6,182,212,0.08)">Docker Captain</span>
+    <span class="tag" style="border-color:rgba(252,109,38,0.4);color:#fc6d26;background:rgba(252,109,38,0.08)">GitLab Hero</span>
+  </p>
+
+  <p class="hero-desc">
+    Construyo pipelines que despliegan miles de veces al día,
+    enseño DevOps desde cero en LATAM y creo comunidad
+    en <strong style="color:var(--purple-l)">295devops.com</strong>.
+  </p>
+
+  <div class="hero-badges">
+    <span class="badge badge-aws">☁️ AWS Container Hero</span>
+    <span class="badge badge-docker">🐳 Docker Captain</span>
+  </div>
+
+  <div class="hero-ctas">
+    <a href="https://github.com/roxsross" class="btn-primary btn-big" target="_blank">
+      ⌥ ver proyectos en GitHub
+    </a>
+    <a href="#bootcamp" class="btn-outline btn-big">
+      🎓 bootcamp DevOps →
+    </a>
+  </div>
+
+  <!-- Terminal flotante -->
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="terminal-title">roxs@devops ~ zsh</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-prompt">roxs@devops</span><span class="t-out">:</span><span class="t-cyan">~/wiru</span><span class="t-out"> $ </span><span class="t-cmd">whoami</span></div>
+      <div class="t-purple">→ Rossana "Roxs" Suarez</div>
+      <div class="t-out">  Tech Lead · DevOps Engineer</div>
+      <br>
+      <div><span class="t-prompt">roxs@devops</span><span class="t-out">:</span><span class="t-cyan">~/wiru</span><span class="t-out"> $ </span><span class="t-cmd">cat certifications.txt</span></div>
+      <div class="t-orange">→ AWS Container Hero ✓</div>
+      <div class="t-cyan">→ Docker Captain     ✓</div>
+      <div style="color:#fc6d26">→ GitLab Hero       ✓</div>
+      <br>
+      <div><span class="t-prompt">roxs@devops</span><span class="t-out">:</span><span class="t-cyan">~/wiru</span><span class="t-out"> $ </span><span class="t-cmd">kubectl get repos</span></div>
+      <div class="t-out">NAME      PIPELINES   REPOS</div>
+      <div class="t-green">wiru      active      9000+</div>
+      <br>
+      <div><span class="t-prompt">roxs@devops</span><span class="t-out">:</span><span class="t-cyan">~/wiru</span><span class="t-out"> $ </span><span class="t-cursor"></span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ STATS ═══════ -->
+<div class="stats-bar">
+  <div class="stat reveal">
+    <div class="stat-num">15K</div>
+    <div class="stat-label">Youtube</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">+50K</div>
+    <div class="stat-label">Linkedin</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">8</div>
+    <div class="stat-label">años en DevOps</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">∞</div>
+    <div class="stat-label">deploys con ROXS</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">LATAM</div>
+    <div class="stat-label">comunidad DevOps</div>
+  </div>
+</div>
+
+<!-- ═══════ SOBRE MÍ ═══════ -->
+<section id="about">
+  <div class="section-label">sobre mí</div>
+  <h2 class="section-title reveal">De Desarrolladora a<br><span style="color:var(--purple-l)">Tech Lead DevOps</span></h2>
+  <p class="section-sub reveal">Con base en Argentina, construyendo el futuro de la entrega de software en LATAM.</p>
+
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        Soy <strong>Rossana Suarez</strong>, Roxs. 
+        Desarrolladora y DevOps con Mucho Ops
+      </p>
+      <p>
+        Hoy también enseño DevOps en LATAM a través de
+        <strong>295devops.com</strong>, el blog en
+        <strong>blog.295devops.com</strong> y el
+        <strong>bootcamp de 90 días</strong> donde acompañé a cientos de personas
+        a dar sus primeros pasos reales en la industria.
+      </p>
+      <div class="highlight">
+        "El mejor momento para aprender DevOps era hace 5 años.
+        El segundo mejor momento es hoy."
+      </div>
+    </div>
+
+    <div class="about-cards">
+      <div class="about-card reveal">
+        <div class="about-card-icon">🏢</div>
+        <div>
+          <div class="about-card-title">Tech Lead — NaranjaX</div>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">☁️</div>
+        <div>
+          <div class="about-card-title">AWS Container Hero</div>
+          <div class="about-card-desc">Reconocida por contribuciones al ecosistema de containers en AWS</div>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">🐳</div>
+        <div>
+          <div class="about-card-title">Docker Captain</div>
+          <div class="about-card-desc">Referente oficial del ecosistema Docker en la comunidad LATAM</div>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">🦊</div>
+        <div>
+          <div class="about-card-title">GitLab Hero</div>
+          <div class="about-card-desc">Contribuciones a la comunidad GitLab CI/CD a nivel global</div>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">🎓</div>
+        <div>
+          <div class="about-card-title">Instructora · 295devops.com</div>
+          <div class="about-card-desc">Bootcamp DevOps · Blog técnico · Comunidad en Discord</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SKILLS ═══════ -->
+<section id="skills">
+  <div class="section-label">stack técnico</div>
+  <h2 class="section-title reveal">Las herramientas<br>del día a día</h2>
+  <p class="section-sub reveal">Lo que tengo abierto en la terminal todos los días — no lo que estudié una vez.</p>
+
+  <div class="skills-grid">
+    <div class="skill-category reveal" style="--accent-color: var(--orange)">
+      <div class="skill-category-title">☁️ Cloud & IaC</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS EKS</span>
+        <span class="skill-tag">AWS ECR</span>
+        <span class="skill-tag">AWS Lambda</span>
+        <span class="skill-tag">Terraform</span>
+        <span class="skill-tag">Pulumi</span>
+        <span class="skill-tag">AWS CDK</span>
+        <span class="skill-tag">Serverless Framework</span>
+        <span class="skill-tag">CloudFormation</span>
+      </div>
+    </div>
+
+    <div class="skill-category reveal" style="--accent-color: var(--cyan)">
+      <div class="skill-category-title">🐳 Containers & Orquestación</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span>
+        <span class="skill-tag">Helm</span>
+        <span class="skill-tag">ArgoCD</span>
+        <span class="skill-tag">Karpenter</span>
+        <span class="skill-tag">KEDA</span>
+        <span class="skill-tag">Istio</span>
+        <span class="skill-tag">k9s</span>
+      </div>
+    </div>
+
+    <div class="skill-category reveal" style="--accent-color: #fc6d26">
+      <div class="skill-category-title">🔄 CI/CD</div>
+      <div class="skill-tags">
+        <span class="skill-tag">GitLab CI</span>
+        <span class="skill-tag">GitHub Actions</span>
+        <span class="skill-tag">WIRU Framework</span>
+        <span class="skill-tag">Jenkins</span>
+        <span class="skill-tag">ArgoCD</span>
+        <span class="skill-tag">Flux</span>
+        <span class="skill-tag">GitOps</span>
+      </div>
+    </div>
+
+    <div class="skill-category reveal" style="--accent-color: var(--green)">
+      <div class="skill-category-title">📊 Observabilidad</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Prometheus</span>
+        <span class="skill-tag">Grafana</span>
+        <span class="skill-tag">Datadog</span>
+        <span class="skill-tag">OpenTelemetry</span>
+        <span class="skill-tag">ELK Stack</span>
+        <span class="skill-tag">Loki</span>
+        <span class="skill-tag">PagerDuty</span>
+      </div>
+    </div>
+
+    <div class="skill-category reveal" style="--accent-color: var(--pink)">
+      <div class="skill-category-title">🔐 Security & Secrets</div>
+      <div class="skill-tags">
+        <span class="skill-tag">HashiCorp Vault</span>
+        <span class="skill-tag">Trivy</span>
+        <span class="skill-tag">Falco</span>
+        <span class="skill-tag">Snyk</span>
+        <span class="skill-tag">AWS Secrets Manager</span>
+        <span class="skill-tag">Checkov</span>
+        <span class="skill-tag">SonarQube</span>
+      </div>
+    </div>
+
+    <div class="skill-category reveal" style="--accent-color: var(--purple-l)">
+      <div class="skill-category-title">🤖 AI & Copilots</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Claude / Claude Code</span>
+        <span class="skill-tag">GitHub Copilot</span>
+        <span class="skill-tag">GitLab Duo</span>
+        <span class="skill-tag">Cursor</span>
+        <span class="skill-tag">Strands Agents</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">MCP Protocol</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PROYECTOS ═══════ -->
+<section id="proyectos">
+  <div class="section-label">proyectos destacados</div>
+  <h2 class="section-title reveal">Lo que construí<br>y sigo construyendo</h2>
+  <p class="section-sub reveal">Proyectos open source, herramientas internas y plataformas educativas.</p>
+
+  <div class="projects-grid">
+
+    <a href="https://90daysdevops.295devops.com" class="project-card reveal" target="_blank">
+      <div class="project-top">
+        <span class="project-icon">🎓</span>
+        <span class="project-status status-live">LIVE</span>
+      </div>
+      <div class="project-title">90 Days of DevOps</div>
+      <p class="project-desc">
+        Bootcamp open source de 90 días para aprender DevOps desde cero.
+        Cubre Linux, Docker, CI/CD, Kubernetes, Terraform y observabilidad
+        con laboratorios prácticos en español para LATAM.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Open Source</span>
+        <span class="project-tag cyan">DevOps</span>
+        <span class="project-tag green">LATAM</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/roxsross" class="project-card reveal" target="_blank">
+      <div class="project-top">
+        <span class="project-icon">🤖</span>
+        <span class="project-status status-wip">WIP</span>
+      </div>
+      <div class="project-title">RoxsAI — DevOps AI Copilot</div>
+      <p class="project-desc">
+        Agente AI con FastMCP + LangChain + Azure OpenAI.
+        Responde preguntas sobre CI/CD, consulta Confluence y GitLab via MCP,
+        y automatiza tareas de soporte de infraestructura.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">MCP</span>
+        <span class="project-tag cyan">LangChain</span>
+        <span class="project-tag green">FastAPI</span>
+        <span class="project-tag orange">Azure OpenAI</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/roxsross" class="project-card reveal" target="_blank">
+      <div class="project-top">
+        <span class="project-icon">📊</span>
+        <span class="project-status status-live">LIVE</span>
+      </div>
+      <div class="project-title">AI-Driven DevOps Observability</div>
+      <p class="project-desc">
+        Proyecto presentado en AWS re:Invent 2025 con Elizabeth Fuentes Leone.
+        Strands Agents SDK + multi-provider AI + Kubernetes/Prometheus +
+        notificaciones Telegram para observabilidad inteligente.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Strands Agents</span>
+        <span class="project-tag cyan">AWS Bedrock</span>
+        <span class="project-tag green">K8s</span>
+        <span class="project-tag orange">re:Invent 2025</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://blog.295devops.com" class="project-card reveal" target="_blank">
+      <div class="project-top">
+        <span class="project-icon">✍️</span>
+        <span class="project-status status-live">LIVE</span>
+      </div>
+      <div class="project-title">Blog 295DevOps</div>
+      <p class="project-desc">
+        Blog técnico en español con artículos sobre GitLab CI/CD, Kubernetes,
+        AWS, Docker, Platform Engineering y tendencias DevOps para la
+        comunidad LATAM.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">DevOps</span>
+        <span class="project-tag cyan">Blog</span>
+        <span class="project-tag green">Español</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+    <a href="https://github.com/roxsross" class="project-card reveal" target="_blank">
+      <div class="project-top">
+        <span class="project-icon">🚀</span>
+        <span class="project-status status-wip">WIP</span>
+      </div>
+      <div class="project-title">RoxsFlow AI</div>
+      <p class="project-desc">
+        Plataforma de gestión de contenido para redes sociales usando
+        Strands Agents, FastAPI, Next.js, integración con Bluesky y Twitter,
+        y generación de contenido técnico multi-provider con AI.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Strands</span>
+        <span class="project-tag cyan">Next.js</span>
+        <span class="project-tag green">FastAPI</span>
+        <span class="project-tag orange">AI</span>
+      </div>
+      <span class="project-arrow">↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══════ COMUNIDAD ═══════ -->
+<section id="comunidad">
+  <div class="section-label">comunidad & talks</div>
+  <h2 class="section-title reveal">Enseñando DevOps<br><span style="color:var(--cyan)">en LATAM</span></h2>
+  <p class="section-sub reveal">Conferencias, workshops y contenido técnico en español para la comunidad hispanohablante.</p>
+
+  <div class="talks-grid">
+    <div class="talk-card reveal">
+      <div class="talk-year">2025 · AWS re:Invent</div>
+      <div class="talk-title">Supercharge DevOps with AI-driven observability</div>
+      <div class="talk-event">DEV304 · Las Vegas, Nevada</div>
+    </div>
+    <div class="talk-card reveal">
+      <div class="talk-year">2025 · AWS Summit</div>
+      <div class="talk-title">Cuando el DevOps se vuelve inteligente — AWS Agent Plugins</div>
+      <div class="talk-event">AWS Summit LATAM</div>
+    </div>
+    <div class="talk-card reveal">
+      <div class="talk-year">2024 · GitLab Commit</div>
+      <div class="talk-title">WIRU: Scaling CI/CD to 9,000 repos with GitLab</div>
+      <div class="talk-event">GitLab Commit · Virtual</div>
+    </div>
+    <div class="talk-card reveal">
+      <div class="talk-year">2024 · Docker Community</div>
+      <div class="talk-title">From Zero to Production: Docker for DevOps Engineers</div>
+      <div class="talk-event">Docker Community LATAM</div>
+    </div>
+    <div class="talk-card reveal">
+      <div class="talk-year">Ongoing · 295DevOps</div>
+      <div class="talk-title">Bootcamp DevOps — Código Facilito</div>
+      <div class="talk-event">Online · En español · LATAM</div>
+    </div>
+    <div class="talk-card reveal">
+      <div class="talk-year">Ongoing · Blog</div>
+      <div class="talk-title">Artículos técnicos sobre K8s, GitLab CI, AI en DevOps</div>
+      <div class="talk-event">blog.295devops.com · Semanal</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BOOTCAMP CTA ═══════ -->
+<section id="bootcamp">
+  <div class="bootcamp-tag">🎓 Bootcamp DevOps · Código Facilito</div>
+  <h2>Aprendé DevOps<br><span>desde cero en español</span></h2>
+  <p>
+    12 semanas de contenido práctico: Linux, Docker, CI/CD, Kubernetes,
+    Terraform, Observabilidad y AI en DevOps. Con acompañamiento real
+    y comunidad activa en Discord.
+  </p>
+  <div class="bootcamp-ctas">
+    <a href="https://295devops.com" class="btn-primary btn-big" target="_blank">
+      🚀 Empezar el bootcamp
+    </a>
+    <a href="https://discord.gg/295devops" class="btn-outline btn-big" target="_blank">
+      💬 Unirme al Discord
+    </a>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="footer-left">
+    <strong>Roxs</strong> · Rossana Suarez · Construido con HTML + AI · 2026
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/roxsross" target="_blank">GitHub</a>
+    <a href="https://twitter.com/roxsross" target="_blank">Twitter</a>
+    <a href="https://295devops.com" target="_blank">295devops.com</a>
+    <a href="https://blog.295devops.com" target="_blank">Blog</a>
+    <a href="https://discord.gg/295devops" target="_blank">Discord</a>
+  </div>
+</footer>
+
+<script>
+// ─── Scroll reveal ───────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      // Stagger siblings
+      const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+      siblings.forEach((el, idx) => {
+        if (el === entry.target) {
+          setTimeout(() => el.classList.add('visible'), idx * 80);
+        }
+      });
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── Active nav link on scroll ───────────────────
+const sections = document.querySelectorAll('section[id], header[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${entry.target.id}`
+          ? 'var(--white)' : '';
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => navObserver.observe(s));
+
+// ─── Terminal typewriter ──────────────────────────
+// Already rendered statically for simplicity + accessibility
+
+// ─── Skill tag hover ripple ───────────────────────
+document.querySelectorAll('.skill-tag').forEach(tag => {
+  tag.addEventListener('mouseenter', () => {
+    tag.style.transform = 'scale(1.05)';
+  });
+  tag.addEventListener('mouseleave', () => {
+    tag.style.transform = '';
+  });
+});
+
+// ─── Smooth appear for stats ──────────────────────
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.stat').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+  statsObserver.observe(el);
+});
+
+// ─── Nav background on scroll ────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 20) {
+    nav.style.borderBottomColor = 'rgba(124,58,237,0.2)';
+  } else {
+    nav.style.borderBottomColor = 'var(--border)';
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
